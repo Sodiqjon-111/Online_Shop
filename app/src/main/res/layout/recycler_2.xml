@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_category"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:layout_margin="18dp"
+    android:elevation="15dp"
+    app:cardBackgroundColor="#F2F9F9FB"
+    app:cardCornerRadius="24dp"
+    app:contentPadding="16dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="2"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:id="@+id/linear_shape"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/card_bac"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/image_rec_2"
+                android:layout_margin="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:src="@drawable/chair"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginLeft="20dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_margin="10dp"
+                android:text="name"
+                android:id="@+id/rv_tv_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+             />
+            <TextView
+         android:layout_marginLeft="10dp"
+                android:text="description"
+                android:id="@+id/rv_tv_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <RatingBar
+                android:layout_margin="10dp"
+                android:id="@+id/rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:attr/ratingBarStyleSmall"
+                android:numStars="5"
+                android:rating="4"
+                android:stepSize="0.1"
+                android:progressTint="#F47709"
+                android:isIndicator="true" />
+            <TextView
+               android:layout_marginLeft="10dp"
+                android:text="price"
+                android:id="@+id/rv_tv_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+</androidx.cardview.widget.CardView>
+
