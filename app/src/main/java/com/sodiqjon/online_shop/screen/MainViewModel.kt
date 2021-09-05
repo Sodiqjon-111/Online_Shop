@@ -13,14 +13,14 @@ class MainViewModel : ViewModel() {
 
     val repository = ShopRepository()
     val error = MutableLiveData<String>()
-
+    val progress = MutableLiveData<Boolean>()
 
     val offersData = MutableLiveData<List<Offer_model>>()
     val categoriesData = MutableLiveData<List<Categories_model>>()
     val topPoductsData = MutableLiveData<List<TopProducts_model>>()
 
     fun getOffer() {
-        repository.getOffer(error, offersData)
+        repository.getOffer(error, progress, offersData)
     }
 
     fun getCategory() {
@@ -29,6 +29,15 @@ class MainViewModel : ViewModel() {
 
     fun getTopProducts() {
         repository.getTopProduct(error, topPoductsData)
+    }
+
+
+    fun getCategoryProducts(id: Int) {
+        repository.getCategoryProducts(id, error, topPoductsData)
+    }
+
+    fun getProductsById(id: List<Int>) {
+        repository.getProductsByid(id, error, topPoductsData)
     }
 
 }

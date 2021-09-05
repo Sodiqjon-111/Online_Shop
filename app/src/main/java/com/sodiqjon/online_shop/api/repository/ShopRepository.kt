@@ -7,77 +7,191 @@ import com.sodiqjon.online_shop.model.BaseResponse
 import com.sodiqjon.online_shop.model.Categories_model
 import com.sodiqjon.online_shop.model.Offer_model
 import com.sodiqjon.online_shop.model.TopProducts_model
+import com.sodiqjon.online_shop.model.request.GetProductsById
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableObserver
+
+import io.reactivex.schedulers.Schedulers.io
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import rx.schedulers.Schedulers
+import rx.schedulers.Schedulers.io
 
 class ShopRepository {
+    val compositeDisposable = CompositeDisposable()
 
-    fun getCategory(error: MutableLiveData<String>,success: MutableLiveData<List<Categories_model>>) {
+    fun getCategory(
+        error: MutableLiveData<String>,
+        success: MutableLiveData<List<Categories_model>>
 
-        NetworkManager.getApiService().getCategory().enqueue(object :
-            Callback<BaseResponse<List<Categories_model>>>{
-            override fun onResponse(
-                call: Call<BaseResponse<List<Categories_model>>>,
-                response: Response<BaseResponse<List<Categories_model>>>
-            ) {
-                if (response.isSuccessful) {
-                    success.value = response.body()!!.data
-                    //res_category.adapter = CategoryAdapter(response.body()!!)
-                } else {
-                    error.value = response.message()
-                    // Toast.makeText(this@MainActivity, "xato", Toast.LENGTH_SHORT).show()
-                }
-            }
+    ) {
 
-            override fun onFailure(call: Call<BaseResponse<List<Categories_model>>>, t: Throwable) {
-                error.value = t.localizedMessage
-                //Toast.makeText(this@MainActivity, "no connection", Toast.LENGTH_SHORT).show()
-            }
-        })
+        compositeDisposable.add(
+            NetworkManager.getApiService().getCategory()
+                .subscribeOn(io.reactivex.schedulers.Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableObserver<BaseResponse<List<Categories_model>>>() {
+                    override fun onNext(t: BaseResponse<List<Categories_model>>) {
+
+                        if (t.success) {
+                            success.value = t.data
+                        } else {
+                            error.value = t.messege
+                        }
+                    }
+
+                    override fun onError(e: Throwable) {
+
+                        error.value = e.localizedMessage
+                    }
+
+                    override fun onComplete() {
+
+                    }
+
+                })
+
+
+        )
     }
-    fun getTopProduct(error: MutableLiveData<String>,success:MutableLiveData<List<TopProducts_model>>){
-        NetworkManager.getApiService().getTopProducts().enqueue(object :
-            Callback<BaseResponse<List<TopProducts_model>>> {
-            override fun onResponse(
-                call: Call<BaseResponse<List<TopProducts_model>>>,
-                response: Response<BaseResponse<List<TopProducts_model>>>
-            ) {
-                if (response.isSuccessful) {
-                    success.value = response.body()!!.data
-                    //res_category.adapter = CategoryAdapter(response.body()!!)
-                } else {
-                    error.value = response.message()
-                    // Toast.makeText(this@MainActivity, "xato", Toast.LENGTH_SHORT).show()
-                }
-            }
-            override fun onFailure(call: Call<BaseResponse<List<TopProducts_model>>>, t: Throwable) {
-                error.value = t.localizedMessage
-            }
 
-        })
+    fun getTopProduct(
+        error: MutableLiveData<String>,
+        success: MutableLiveData<List<TopProducts_model>>
+    ) {
+        compositeDisposable.add(
+            NetworkManager.getApiService().getTopProducts()
+                .subscribeOn(io.reactivex.schedulers.Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object :
+                    DisposableObserver<BaseResponse<List<TopProducts_model>>>() {
+                    override fun onNext(t: BaseResponse<List<TopProducts_model>>) {
+
+                        if (t.success) {
+                            success.value = t.data
+                        } else {
+                            error.value = t.messege
+                        }
+                    }
+
+                    override fun onError(e: Throwable) {
+
+                        error.value = e.localizedMessage
+                    }
+
+                    override fun onComplete() {
+
+                    }
+
+                })
+
+
+        )
     }
-    fun getOffer(error: MutableLiveData<String>,success:MutableLiveData<List<Offer_model>>) {
-        NetworkManager.getApiService().getOffers().enqueue(object : Callback<BaseResponse<List<Offer_model>>> {
-            @SuppressLint("CheckResult")
-            override fun onResponse(
-                call: Call<BaseResponse<List<Offer_model>>> ,
-                response: Response<BaseResponse<List<Offer_model>>>
-            ) {
-                if (response.isSuccessful) {
 
-                    success.value = response.body()!!.data
-                    //offers = response.body()!!
+    fun getOffer(
+        error: MutableLiveData<String>, progress: MutableLiveData<Boolean>,
+        success: MutableLiveData<List<Offer_model>>
+    ) {
+        progress.value = true
+        compositeDisposable.add(
+            NetworkManager.getApiService().getOffers()
+                .subscribeOn(io.reactivex.schedulers.Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableObserver<BaseResponse<List<Offer_model>>>() {
+                    override fun onNext(t: BaseResponse<List<Offer_model>>) {
+                        progress.value = false
+                        if (t.success) {
+                            success.value = t.data
+                        } else {
+                            error.value = t.messege
+                        }
+                    }
 
-                } else {
-                    error.value = response.message()
-                    //  Toast.makeText(this@MainActivity, "no connection", Toast.LENGTH_SHORT).show()
-                }
-            }
-            override fun onFailure(call: Call<BaseResponse<List<Offer_model>>> , t: Throwable) {
-                error.value = t.localizedMessage
-                //  Toast.makeText(this@MainActivity, "no connection", Toast.LENGTH_SHORT).show()
-            }
-        })
+                    override fun onError(e: Throwable) {
+                        progress.value = false
+                        error.value = e.localizedMessage
+                    }
+
+                    override fun onComplete() {
+
+                    }
+
+                })
+
+
+        )
+    }
+
+
+    fun getCategoryProducts(id:Int,
+        error: MutableLiveData<String>,
+        success: MutableLiveData<List<TopProducts_model>>
+    ) {
+        compositeDisposable.add(
+            NetworkManager.getApiService().getCategoryProducts(id)
+                .subscribeOn(io.reactivex.schedulers.Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object :
+                    DisposableObserver<BaseResponse<List<TopProducts_model>>>() {
+                    override fun onNext(t: BaseResponse<List<TopProducts_model>>) {
+
+                        if (t.success) {
+                            success.value = t.data
+                        } else {
+                            error.value = t.messege
+                        }
+                    }
+
+                    override fun onError(e: Throwable) {
+
+                        error.value = e.localizedMessage
+                    }
+
+                    override fun onComplete() {
+
+                    }
+
+                })
+
+
+        )
+    }
+    fun getProductsByid(id:List<Int>,
+                            error: MutableLiveData<String>,
+                            success: MutableLiveData<List<TopProducts_model>>
+    ) {
+        compositeDisposable.add(
+            NetworkManager.getApiService().getProductsByid(GetProductsById(id))
+                .subscribeOn(io.reactivex.schedulers.Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object :
+                    DisposableObserver<BaseResponse<List<TopProducts_model>>>() {
+                    override fun onNext(t: BaseResponse<List<TopProducts_model>>) {
+
+                        if (t.success) {
+                            success.value = t.data
+                          //  t.data.forEach { it.cartCount = PrefUtills.getCartCount(it)}
+                            } else {
+                            error.value = t.messege
+                        }
+                    }
+
+                    override fun onError(e: Throwable) {
+
+                        error.value = e.localizedMessage
+                    }
+
+                    override fun onComplete() {
+
+                    }
+
+                })
+
+
+        )
     }
 }

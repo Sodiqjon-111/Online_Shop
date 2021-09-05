@@ -13,8 +13,10 @@ import com.sodiqjon.online_shop.model.BaseResponse
 import com.sodiqjon.online_shop.model.Categories_model
 import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.category_layout.view.*
-
-class CategoryAdapter(val items:List<Categories_model>):RecyclerView.Adapter<CategoryAdapter.ItemHolder>() {
+interface  CategoryAdpterCallBack{
+    fun onClickItem(item:Categories_model)
+}
+class CategoryAdapter(val items:List<Categories_model>,val callBack: CategoryAdpterCallBack):RecyclerView.Adapter<CategoryAdapter.ItemHolder>() {
 
     class ItemHolder(view: View):RecyclerView.ViewHolder(view)
 
@@ -28,7 +30,9 @@ class CategoryAdapter(val items:List<Categories_model>):RecyclerView.Adapter<Cat
           items.forEach{
               it.checked=false
           }
+
             item.checked=true
+            callBack.onClickItem(item)
             notifyDataSetChanged()
 
             Log.i(TAG, " ${items[position]}")
