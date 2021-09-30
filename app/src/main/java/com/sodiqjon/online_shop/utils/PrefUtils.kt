@@ -1,15 +1,15 @@
 package com.sodiqjon.online_shop.utils
 
 import com.orhanobut.hawk.Hawk
-import com.sodiqjon.online_shop.model.TopProducts_model
-import com.sodiqjon.online_shop.model.request.Bucket_model
+import com.sodiqjon.online_shop.model.ProductModel
+import com.sodiqjon.online_shop.model.request.BasketModel
 
 object PrefUtils {
     const val PREF_FAVOURITES = "pref_favourites"
-    const val PREF_BUCKET = "pref_buckets"
+    const val PREF_BASKET = "pref_buckets"
 
 
-    fun setFavourite(item: TopProducts_model) {
+    fun setFavourite(item: ProductModel) {
         val items = Hawk.get(PREF_FAVOURITES, arrayListOf<Int>())
 
         if (items.filter { it == item.id }.firstOrNull() != null) {
@@ -25,16 +25,18 @@ object PrefUtils {
         return Hawk.get(PREF_FAVOURITES, arrayListOf<Int>())
     }
 
-    fun checkFavourite(item: TopProducts_model): Boolean {
+    fun checkFavourite(item: ProductModel): Boolean {
         val items = Hawk.get(PREF_FAVOURITES, arrayListOf<Int>())
         return items.filter { it == item.id }.firstOrNull() != null
 
     }
 
 
-    fun setBuckets(item: TopProducts_model) {
-        val items = Hawk.get<ArrayList<Bucket_model>>(PREF_BUCKET, arrayListOf<Bucket_model>())
+    fun setBaskets(item: ProductModel) {
+        val items = Hawk.get<ArrayList<BasketModel>>(PREF_BASKET, arrayListOf<BasketModel>())
+
         val cart = items.filter { it.product_id == item.id }.firstOrNull()
+
         if (cart != null) {
             if (item.cardCount > 0) {
                 cart.count = item.cardCount
@@ -42,20 +44,20 @@ object PrefUtils {
                 items.remove(cart)
             }
         } else {
-            val newCart = Bucket_model(item.id, item.cardCount)
+            val newCart = BasketModel(item.id, item.cardCount)
             items.add(newCart)
         }
 
 
-        Hawk.put(PREF_BUCKET, items)
+        Hawk.put(PREF_BASKET, items)
     }
 
-    fun getBucketList(): ArrayList<Bucket_model> {
-        return Hawk.get(PREF_BUCKET, arrayListOf<Bucket_model>())
+    fun getBasketList(): ArrayList<BasketModel> {
+        return Hawk.get(PREF_BASKET, arrayListOf<BasketModel>())
     }
 
-    fun getCardCount(item: TopProducts_model): Int {
-        val items = Hawk.get<ArrayList<Bucket_model>>(PREF_FAVOURITES, arrayListOf<Bucket_model>())
+    fun getCardCount(item: ProductModel): Int {
+        val items = Hawk.get<ArrayList<BasketModel>>(PREF_BASKET, arrayListOf<BasketModel>())
         return items.filter { it.product_id == item.id }.firstOrNull()?.count ?: 0
 
     }

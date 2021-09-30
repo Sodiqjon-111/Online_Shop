@@ -1,8 +1,8 @@
 package com.sodiqjon.online_shop.api
 
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.sodiqjon.online_shop.utils.Constants.BASE_URL
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkManager {

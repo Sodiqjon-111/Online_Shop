@@ -10,7 +10,7 @@
         android:icon="@drawable/like"/>
     <item android:title="3"
         android:id="@+id/bucketFragment"
-        android:icon="@drawable/home2"/>
+        android:icon="@drawable/basket"/>
     <item android:title="4"
         android:id="@+id/personalFragment"
         android:icon="@drawable/home2"/>

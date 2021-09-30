@@ -5,53 +5,55 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.sodiqjon.online_shop.model.TopProducts_model
+import com.orhanobut.hawk.Hawk
+import com.sodiqjon.online_shop.model.ProductModel
 import com.sodiqjon.online_shop.utils.Constants
 import com.sodiqjon.online_shop.utils.PrefUtils
 import kotlinx.android.synthetic.main.activity_detail.*
-import kotlinx.android.synthetic.main.fragment_detail.*
 
 class DetailActivity : AppCompatActivity() {
 
-    lateinit var item: TopProducts_model
+    lateinit var item: ProductModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+        Hawk.init(this).build()
 
-        btn_back.setOnClickListener {
-            finish()
+        setSupportActionBar(toolbar_detail)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        btn_like.setOnClickListener {
+            PrefUtils.setFavourite(item)
+
+            if (PrefUtils.checkFavourite(item)) {
+                btn_like.setImageResource(R.drawable.like_red)
+            } else {
+                btn_like.setImageResource(R.drawable.like)
+            }
         }
 
-         btn_like.setOnClickListener {
-             PrefUtils.setFavourite(item)
+        item = intent.getSerializableExtra(Constants.EXTRA_DATA) as ProductModel
 
-             if (PrefUtils.checkFavourite(item)){
-              btn_like.setImageResource(R.drawable.like_red)
-             } else{
-                 btn_like.setImageResource(R.drawable.like)
-             }
-         }
-
-        item = intent.getSerializableExtra(Constants.EXTRA_DATA) as TopProducts_model
-
-        tv_1.text= item.name
-        tv_2.text = item.name
-        tv_3.text = item.price
+        tv_detail_1.text = item.name
+        tv_detail_2.text = item.name
+        tv_detail_3.text = item.price
 
 
-        if(PrefUtils.getCardCount(item)>0){
-            btn_add_to_bag.visibility= View.GONE
+        if (PrefUtils.getCardCount(item) > 0) {
+            btn_addbag.visibility = View.GONE
         }
-        if (PrefUtils.checkFavourite(item)){
+        if (PrefUtils.checkFavourite(item)) {
             btn_like.setImageResource(R.drawable.like_red)
-        } else{
+        } else {
             btn_like.setImageResource(R.drawable.like)
         }
-        Glide.with(this).load(Constants.HOST_IMAGE + item.image).into(im_1)
 
-        btn_add_to_bag.setOnClickListener {
-            item.cardCount=1
-            PrefUtils.setBuckets(item)
+
+        Glide.with(this).load(Constants.HOST_IMAGE + item.image).into(image_detail)
+
+        btn_addbag.setOnClickListener {
+            item.cardCount = 1
+            PrefUtils.setBaskets(item)
             Toast.makeText(this, "Product added to bucket", Toast.LENGTH_SHORT).show()
             finish()
         }

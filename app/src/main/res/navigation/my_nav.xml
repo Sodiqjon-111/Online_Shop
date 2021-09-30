@@ -17,14 +17,14 @@
     </fragment>
     <fragment
         android:id="@+id/starFragment"
-        android:name="com.sodiqjon.online_shop.screen.star.StarFragment"
+        android:name="com.sodiqjon.online_shop.screen.star.FavouriteFragment"
         android:label="fragment_star"
-        tools:layout="@layout/fragment_star" />
+        tools:layout="@layout/fragment_favourite" />
     <fragment
         android:id="@+id/bucketFragment"
-        android:name="com.sodiqjon.online_shop.screen.bucket.BucketFragment"
+        android:name="com.sodiqjon.online_shop.screen.basket.BasketFragment"
         android:label="fragment_bucket"
-        tools:layout="@layout/fragment_bucket" />
+        tools:layout="@layout/fragment_basket" />
     <fragment
         android:id="@+id/personalFragment"
         android:name="com.sodiqjon.online_shop.screen.personal.PersonalFragment"

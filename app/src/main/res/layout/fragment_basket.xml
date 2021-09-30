@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screen.bucket.BucketFragment">
+    tools:context=".screen.basket.BasketFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
         <FrameLayout
-            android:id="@+id/toolbar_detail"
+            android:id="@+id/toolbar_basket"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             tools:ignore="MissingConstraints">
@@ -30,7 +30,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="Detail"/>
+                    android:text="Basket"/>
                 <ImageView
                     android:clickable="true"
                     android:id="@+id/btn_like"
@@ -49,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/item_bucket"
-        android:id="@+id/recycler_bucket"/>
+        android:id="@+id/recycler_basket"/>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 

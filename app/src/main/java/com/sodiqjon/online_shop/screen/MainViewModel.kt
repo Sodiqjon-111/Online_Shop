@@ -3,10 +3,10 @@ package com.sodiqjon.online_shop.screen
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sodiqjon.online_shop.api.repository.ShopRepository
-import com.sodiqjon.online_shop.model.BaseResponse
-import com.sodiqjon.online_shop.model.Categories_model
-import com.sodiqjon.online_shop.model.Offer_model
-import com.sodiqjon.online_shop.model.TopProducts_model
+import com.sodiqjon.online_shop.db.AppDataBase
+import com.sodiqjon.online_shop.model.CategoryModel
+import com.sodiqjon.online_shop.model.OfferModel
+import com.sodiqjon.online_shop.model.ProductModel
 
 class MainViewModel : ViewModel() {
 
@@ -14,10 +14,9 @@ class MainViewModel : ViewModel() {
     val repository = ShopRepository()
     val error = MutableLiveData<String>()
     val progress = MutableLiveData<Boolean>()
-
-    val offersData = MutableLiveData<List<Offer_model>>()
-    val categoriesData = MutableLiveData<List<Categories_model>>()
-    val topPoductsData = MutableLiveData<List<TopProducts_model>>()
+    val offersData = MutableLiveData<List<OfferModel>>()
+    val categoriesData = MutableLiveData<List<CategoryModel>>()
+    val productsData = MutableLiveData<List<ProductModel>>()
 
     fun getOffer() {
         repository.getOffer(error, progress, offersData)
@@ -28,16 +27,24 @@ class MainViewModel : ViewModel() {
     }
 
     fun getTopProducts() {
-        repository.getTopProduct(error, topPoductsData)
+        repository.getTopProduct(error, productsData)
     }
 
 
     fun getCategoryProducts(id: Int) {
-        repository.getCategoryProducts(id, error, topPoductsData)
+        repository.getCategoryProducts(id, error, productsData)
     }
 
     fun getProductsById(id: List<Int>) {
-        repository.getProductsByid(id, error, topPoductsData)
+        repository.getProductsByid(id, error, productsData)
+    }
+    fun insertAllProducts2DB(items:List<ProductModel>){
+        AppDataBase.getDatabase().productDao.insertAll(items)
+
+
+    }
+    fun getAllDBProducts(){
+        productsData.value=AppDataBase.getDatabase().productDao.getAllProducts()
     }
 
 }

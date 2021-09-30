@@ -9,10 +9,9 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.sodiqjon.online_shop.R
-import com.sodiqjon.online_shop.model.Categories_model
+import com.sodiqjon.online_shop.model.CategoryModel
 import com.sodiqjon.online_shop.screen.MainViewModel
 import com.sodiqjon.online_shop.view.CategoryAdapter
 import com.sodiqjon.online_shop.view.CategoryAdpterCallBack
@@ -61,7 +60,7 @@ open class HomeFragment : Fragment() {
 
         viewModel.categoriesData.observe(requireActivity(), Observer {
             res_category.adapter = CategoryAdapter(it,object :CategoryAdpterCallBack{
-                override fun onClickItem(item: Categories_model) {
+                override fun onClickItem(item: CategoryModel) {
                     viewModel.getCategoryProducts(item.id)
                 }
 
@@ -69,7 +68,7 @@ open class HomeFragment : Fragment() {
         })
 
 
-        viewModel.topPoductsData.observe(requireActivity(), Observer {
+        viewModel.productsData.observe(requireActivity(), Observer {
             recycler_2.adapter=TopProductAdapter(it)
         })
 
@@ -84,7 +83,8 @@ open class HomeFragment : Fragment() {
     fun loadData() {
         viewModel.getOffer()
         viewModel.getCategory()
-        viewModel.getTopProducts()
+        viewModel.getAllDBProducts()
+       // viewModel.getTopProducts()
     }
 
 

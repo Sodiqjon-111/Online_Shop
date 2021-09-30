@@ -9,14 +9,12 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.sodiqjon.online_shop.R
-import com.sodiqjon.online_shop.model.BaseResponse
-import com.sodiqjon.online_shop.model.Categories_model
-import kotlinx.android.synthetic.main.activity_main.view.*
+import com.sodiqjon.online_shop.model.CategoryModel
 import kotlinx.android.synthetic.main.category_layout.view.*
 interface  CategoryAdpterCallBack{
-    fun onClickItem(item:Categories_model)
+    fun onClickItem(item:CategoryModel)
 }
-class CategoryAdapter(val items:List<Categories_model>,val callBack: CategoryAdpterCallBack):RecyclerView.Adapter<CategoryAdapter.ItemHolder>() {
+class CategoryAdapter(val items:List<CategoryModel>, val callBack: CategoryAdpterCallBack):RecyclerView.Adapter<CategoryAdapter.ItemHolder>() {
 
     class ItemHolder(view: View):RecyclerView.ViewHolder(view)
 

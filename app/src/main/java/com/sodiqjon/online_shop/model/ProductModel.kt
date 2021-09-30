@@ -1,8 +1,12 @@
 package com.sodiqjon.online_shop.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.io.Serializable
-
-data class TopProducts_model(
+@Entity(tableName = "products")
+data class ProductModel(
+    @PrimaryKey(autoGenerate = true)
+    val uid:Int,
     val id:Int,
     val name:String,
     val price:String,
